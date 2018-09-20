@@ -1,0 +1,113 @@
+<%+ extend('layout') %>
+    <%+ section('content')%>
+        <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+        <script>
+            // Initialize Firebase client side
+            var config = {
+                apiKey: "AIzaSyDGglfQ9bONieMyaB3vPfuNQbjUO78INPU",
+                authDomain: "khuniversity-cef73.firebaseapp.com",
+                databaseURL: "https://khuniversity-cef73.firebaseio.com",
+                projectId: "khuniversity-cef73",
+                storageBucket: "khuniversity-cef73.appspot.com",
+                messagingSenderId: "701352816702"
+            };
+            firebase.initializeApp(config);
+
+            function getFaculty() {
+                $("#faculty").empty();
+                var universityId = $("#university").val();
+                console.log(universityId);
+                var databaseRef = firebase.database().ref('faculty').orderByChild("university_id").equalTo(universityId);
+                databaseRef.once('value').then(function (snapshot) {
+                    snapshot.forEach(faculty => {
+                        $("#faculty").append($('<option>', {
+                            value: faculty.val().id,
+                            text: faculty.val().name_en
+                        }));
+                    });
+                });
+            }
+        </script>
+
+        <body onload="getFaculty()"></body>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="#005A77">
+                    <h4 class="title">Add Department</h4>
+                    <p class="category">______________________</p>
+                </div>
+                <div class="card-content">
+                    <form action="/department-add" method="POST" enctype="multipart/form-data" autocomplete="off">
+                        <div>
+                            <h4 class="title">University & Faculty</h4>
+                            <div class="row card-content" style="margin-top: -30px">
+                                <div class="col-md-6">
+                                    <div class="form-group label-static">
+                                        <label class="control-label">Select University</label>
+                                        <select class="form-control" id="university" name="university" onchange="getFaculty()">
+                                            <% universitys.forEach((university)=>{ %>
+                                                <option value="<%= university.val().id %>">
+                                                    <%= university.val().name_en %>
+                                                </option>
+                                                <% }) %>
+                                        </select>
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-static">
+                                        <label class="control-label">Select Faculty</label>
+                                        <select class="form-control" name="faculty" id="faculty">
+                                        </select>
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="title">Department</h4>
+                            <div class="row card-content" style="margin-top: -30px">
+                                <div class="col-md-5">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">English Name</label>
+                                        <input type="text" name="name_en" class="form-control">
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">Khmer Name</label>
+                                        <input type="text" name="name_kh" class="form-control">
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">Price</label>
+                                        <input type="number" name="price" class="form-control">
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div>
+                            <h4 class="title">Subject Recomment</h4>
+                            <div class="card-content">
+                                <% majors.forEach((major)=>{ %>
+                                    <div class="checkbox col-md-2">
+                                        <label style="color: #005A77">
+                                            <input type="checkbox" name="sub_recomment" value="<%= major.val().id %>">
+                                            <%= major.val().name_en %>
+                                        </label>
+                                    </div>
+                                    <% }) %>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary pull-right">SAVE DEPARTMENT</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <%+ endSection %>

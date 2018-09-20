@@ -1,0 +1,61 @@
+<%+ extend('layout') %>
+    <%+ section('content') %>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="#005A77">
+                                <a class="btn pull-right" data-background-color="#005A77" href="/faculty-add">Add Faculty</a>
+                                <h4 class="title">Faculty List</h4>
+                                <p class="category">Here is a list of all faculty of all university !</p>
+                            </div>
+                            <div class="card-content table-responsive">
+                                <table class="table">
+                                    <thead class="text-primary">
+                                        <th>Faculty (EN)</th>
+                                        <th>Faculty (KH)</th>
+                                        <th>Webiste</th>
+                                        <th>University</th>
+                                        <th style="width: 5%;text-align: center">Edit</th>
+                                        <th style="width: 5%;text-align:center">Delete</th>
+                                    </thead>
+                                    <tbody>
+                                        <% facultys.forEach((faculty)=>{ %>
+                                            <tr>
+                                                <td>
+                                                    <%= faculty.val().name_en %>
+                                                </td>
+                                                <td>
+                                                    <%= faculty.val().name_kh %>
+                                                </td>
+                                                <td>
+                                                    <a href="<%=faculty.val().contact.website %>">
+                                                        <%= faculty.val().contact.website %>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <%= faculty.val().university_id %>
+                                                </td>
+                                                <td align="center">
+                                                    <a href="/faculty-edit/<%=faculty.val().id %>">
+                                                        <i class="material-icons">edit</i>
+                                                    </a>
+                                                </td>
+                                                <td align="center">
+                                                    <a href="#">
+                                                        <i class="material-icons">delete_forever</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                            <%}) %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%+ endSection %>

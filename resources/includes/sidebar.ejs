@@ -1,0 +1,50 @@
+<div class="sidebar" data-color="purple" data-image="/img/sidebar-1.jpg">
+<div class="logo">
+    <a href="/">
+        <img style="width: 200px;" src="/image/ic_logo.png"/>
+    </a>
+</div>
+<div class="sidebar-wrapper">
+    <ul class="nav" id="navigation">
+        <li class="<%if (page == 'dashboard'){%>
+            active
+            <%}%>">
+            <a href="/">
+                <i class="material-icons">dashboard</i>
+                <p>Dashboard</p>
+            </a>
+        </l>
+        <li class="<%if (page == 'university'){%>
+                active
+                <%}%>">
+            <a href="/university">
+                <i class="material-icons">business</i>
+                <p>University</p>
+            </a>
+        </li>
+
+        <li class="<%if (page == 'department'){%>
+                active
+                <%}%>">
+            <a href="/department">
+                    <i class="material-icons">subject</i>
+                    <p>Department</p>
+            </a>
+        </li>
+        <li class="<%if (page == 'faculty'){%>
+                active
+                <%}%>">
+            <a href="/faculty">
+                <i class="material-icons">account_balance</i>
+                <p>Occupation</p>
+            </a>
+        </li>
+        <li>
+            <a href="/setting">
+                <i class="material-icons text-gray">settings</i>
+                <p>Setting</p>
+            </a>
+        </li>
+    </ul>
+</div>
+</div>

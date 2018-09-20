@@ -1,0 +1,73 @@
+<%+ extend('layout') %>
+    <%+ section('content')%>
+        <script>
+            //get logo
+            function addLogo() {
+                document.getElementById("logo").click();
+            }
+            function previewLogo() {
+                var previewLogo = document.getElementById('pre_logo');
+                var fileLogo = document.getElementById('logo').files[0];
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    previewLogo.src = reader.result;
+                }
+                if (fileLogo) {
+                    reader.readAsDataURL(fileLogo);
+                }
+            }
+        </script>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="#005A77">
+                    <h4 class="title">Add University</h4>
+                    <p class="category">___________________</p>
+                </div>
+                <div class="card-content">
+                    <form action="/university-add" method="POST" enctype="multipart/form-data" autocomplete="off">
+                        <div class="col-md-12">
+                            <h4 class="title">Logo</h4>
+                            <div class="card-content" style="margin-top: -30px">
+                                <div class="col-md-2">
+                                    <li class="form-group" style="list-style-type: none">
+                                        <img src="/image/ic_add.png" style="width: 100px;height: 100px;border-radius: 5px;box-shadow: 2px 3px #005A77" id="pre_logo"
+                                            name="pre_logo" onclick="addLogo()">
+                                        <input type="file" id="logo" name="logo" accept="image/*" style="display: none" onchange="previewLogo()">
+                                    </li>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="title">University</h4>
+                            <div class="row card-content" style="margin-top: -30px">
+                                <div class="col-md-3">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">English Name</label>
+                                        <input type="text" name="name_en" class="form-control">
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">Khmer Name</label>
+                                        <input type="text" name="name_kh" class="form-control">
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">Website</label>
+                                        <input type="text" name="website" class="form-control">
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <button type="submit" class="btn btn-primary pull-right">SAVE UNIVERSITY</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <%+ endSection %>
