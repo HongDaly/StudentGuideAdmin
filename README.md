@@ -1,3 +1,7 @@
 # StudentGuideAdmin
 
-#Student Guide Admin Page
+Student Guide Admin Page : 
+Using
+- Firestore
+- Firebase Storage
+- Firebase Auth
