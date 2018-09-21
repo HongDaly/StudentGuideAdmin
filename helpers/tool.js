@@ -1,6 +1,6 @@
 var firebaseAdmin = require('firebase-admin');
 var multerRoot = require('multer');
-var serviceAccount = require('../helpers/studentguide-dd1a6-firebase-adminsdk-iymb7-ba8cd70300.json');
+var serviceAccount = require('../helpers/studentguide-dd1a6-firebase-adminsdk-iymb7-597ac9a068.json');
 firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert(serviceAccount),
     databaseURL: 'https://studentguide-dd1a6.firebaseio.com',

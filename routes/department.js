@@ -1,10 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var firebaseAdmin = require('../tools/firebase-admin-init').firebaseAdmin;
-var database = firebaseAdmin.database();
-
-var multer = require('../tools/firebase-admin-init').multer;
-var department = require('../models/department');
+var firebaseAdmin = require('../helpers/tool').firebaseAdmin;
+var database = firebaseAdmin.firestore()
+var multer = require('../helpers/tool').multer
 
 router.get('/department',function(req,res){
     getAllDepartment(req,res);
@@ -13,47 +11,76 @@ router.post('/department',function(req,res){
     res.redirect('/department');
 })
 router.get('/department-add',function(req,res){
-    getAllUniversity(req,res);
+    database.collection('majors').get()
+        .then(snapshot => {
+           console.log(snapshot)
+            res.render('layouts/department-add',{
+                title : 'Department',
+                page : "department",
+                majors : snapshot
+            }); 
+        })
+        .catch(err => {
+            console.log(err)
+            res.redirect('/')
+        });
 })
 router.post('/department-add',multer.any(),function(req,res){
     addDepartment(req,res);
 })
-function getAllUniversity(req,res){
-    var universityRef = database.ref('university');
-    var majorRef   = database.ref('major');
-    universityRef.once('value').then(function(snapshot) {
-        majorRef.once('value').then(function(majors){
-            res.render('layouts/department-add',{
-                title : 'Department',
-                universitys : snapshot,
-                majors      : majors,
-                page : "department"
-            });  
-        })  
-    });
-}
 function addDepartment(req,res){
-    var data = req.body;
-    var departmentRef = database.ref('department');
-    department.id = departmentRef.push().key;
-    department.faculty_id = data.faculty;
-    department.university_id = data.university;
-    department.name_en = data.name_en;
-    department.name_kh = data.name_kh;
-    department.price = data.price;
-    department.sub_recommant = data.sub_recomment;
-
-    departmentRef.child(department.id).set(department).then(function(){
+    var data = req.body
+    console.log(data)
+    var departmentRef = database.collection('departments')
+    var department = {
+        id : departmentRef.doc().id,
+        name_en : data.name_en,
+        name_kh : data.name_kh,
+        sub_recomment : data.sub_recomment
+    }
+    departmentRef.doc(department.id).set(department).then(function(){
         res.redirect('/department-add');
-    });
+    }).catch(function(error){
+        console.error("Error writing document: ", error)
+    })
 }
+// function getAllUniversity(req,res){
+//     res.render('layouts/department-add',{
+//         title : 'Department',
+//         universitys : snapshot,
+//         majors      : majors,
+//         page : "department"
+//     });  
+    // var universityRef = database.ref('university');
+    // var majorRef   = database.ref('major');
+    // universityRef.once('value').then(function(snapshot) {
+    //     majorRef.once('value').then(function(majors){
+    //         res.render('layouts/department-add',{
+    //             title : 'Department',
+    //             universitys : snapshot,
+    //             majors      : majors,
+    //             page : "department"
+    //         });  
+    //     })  
+    // });
+// }
+
 function getAllDepartment(req,res){
-    var departmentRef = database.ref('department').once('value').then(function(snapshot){
+    database.collection('departments').get()
+    .then(snapshot => {
         res.render('layouts/department',{
             title : 'Department',
             departments : snapshot,
             page : "department"
         }); 
     })
+    .catch(err => {
+        console.log(err)
+        res.redirect('/')
+    });
 }
 module.exports = router
+
+
+
+

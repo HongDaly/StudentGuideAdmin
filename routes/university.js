@@ -6,8 +6,6 @@ const database = firebaseAdmin.firestore()
 database.settings({ timestampsInSnapshots: true })
 const storage = firebaseAdmin.storage()
 var UUID = require('uuid/v4');
-// var getJSON = require('get-json');
-// var request = require("request")
 
 router.get('/university', function (req, res) {
     database.collection('universitys').get()
@@ -36,13 +34,9 @@ router.get('/university-add', function (req, res) {
 router.post('/university-add', multer.any(), function (req, res) {
     addUniversity(req, res);
 })
-// router.post('', function (req, res) {
-//     res.redirect('/university-edit-:universityId');
-// })
 function addUniversity(req,res) {
     var file = req.files[0]
     let uuid = UUID()
-    //console.log(file.originalname);
     var imageBuffer = Buffer.from(file.buffer, 'base64')
     var bucket = storage.bucket()
     let fileName = `logo/${new Date().getTime() + file.originalname}`

@@ -8,43 +8,43 @@
                             <div class="card-header" data-background-color="#005A77">
                                 <a class="btn pull-right" data-background-color="#005A77" href="/department-add">Add Department</a>
                                 <h4 class="title">Department List</h4>
-                                <p class="category">Here is a list of all department of all faculty !</p>
+                                <p class="category">Here is a list of all department in cambodia!</p>
                             </div>
                             <div class="card-content table-responsive">
                                 <table class="table">
                                     <thead class="text-primary">
                                         <th>Department (EN)</th>
                                         <th>Department (KH)</th>
-                                        <th>Price</th>
+                                        <th>Located in University</th>
                                         <th style="width: 5%;text-align: center">Edit</th>
                                         <th style="width: 5%;text-align:center">Delete</th>
                                     </thead>
                                     <tbody>
-                                        <% departments.forEach((department)=>{ %>
+                                    <% departments.forEach((department)=>{ %>
 
-                                            <tr>
-                                                <td>
-                                                    <%= department.val().name_en %>
-                                                </td>
-                                                <td>
-                                                    <%= department.val().name_kh %>
-                                                </td>
-                                                <td>
-                                                    <%= department.val().price %>
-                                                </td>
-                                                <td align="center">
-                                                    <a href="/department-edit/<%=department.val().id %>">
-                                                        <i class="material-icons">edit</i>
-                                                    </a>
-                                                </td>
-                                                <td align="center">
-                                                    <a href="#">
-                                                        <i class="material-icons">delete_forever</i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                            <%}) %>
+                                        <tr>
+                                            <td>
+                                                <%= department.data().name_en %>
+                                            </td>
+                                            <td>
+                                                <%= department.data().name_kh %>
+                                            </td>
+                                            <td>
+                                                0
+                                            </td>
+                                            <td align="center">
+                                                <a href="/department-edit/<%=department.data().id %>">
+                                                    <i class="material-icons">edit</i>
+                                                </a>
+                                            </td>
+                                            <td align="center">
+                                                <a href="#">
+                                                    <i class="material-icons">delete_forever</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                        
+                                        <%}) %>
                                     </tbody>
                                 </table>
                             </div>

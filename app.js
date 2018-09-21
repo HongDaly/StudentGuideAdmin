@@ -15,9 +15,11 @@ app.engine('ejs',engine.__express);
 // get router
 var indexRouter = require('./routes/index')
 var universityRouter = require('./routes/university')
+var departmentRouter = require('./routes/department')
 // use router
 app.use(indexRouter)
 app.use(universityRouter)
+app.use(departmentRouter)
 
 //body-parser
 app.use(bodyParser.urlencoded({extended:false}))
