@@ -1,28 +1,28 @@
-var express = require('express');
-var router = express.Router();
-var firebaseAdmin = require('../helpers/tool').firebaseAdmin;
-var multer = require('../helpers/tool').multer;
-var database = firebaseAdmin.firestore();
-// var storage = firebaseAdmin.storage();
-var university = require('../models/university');
-// var UUID = require('uuid/v4');
+var express = require('express')
+var router = express.Router()
+var firebaseAdmin = require('../helpers/tool').firebaseAdmin
+var multer = require('../helpers/tool').multer
+const database = firebaseAdmin.firestore()
+database.settings({ timestampsInSnapshots: true })
+const storage = firebaseAdmin.storage()
+var UUID = require('uuid/v4');
 // var getJSON = require('get-json');
 // var request = require("request")
 
 router.get('/university', function (req, res) {
-    res.render('layouts/university', {
-                title: 'University',
-                page: 'university'
-               // universitys: snapshot
-    });
-    // var universityRef = database.ref('university');
-    // universityRef.once('value').then(function (snapshot) {
-    //     res.render('layouts/university', {
-    //         title: 'University',
-    //         page: 'university',
-    //         universitys: snapshot
-    //     });
-    // });
+    database.collection('universitys').get()
+        .then(snapshot => {
+           console.log(snapshot)
+            res.render('layouts/university', {
+                title       : 'University',
+                page        : 'university',
+                universitys : snapshot
+            });
+        })
+        .catch(err => {
+            console.log(err)
+            res.redirect('/')
+        });
 })
 router.post('/university', function (req, res) {
     res.redirect('/university');
@@ -39,30 +39,14 @@ router.post('/university-add', multer.any(), function (req, res) {
 // router.post('', function (req, res) {
 //     res.redirect('/university-edit-:universityId');
 // })
-
-function addUniversity(req, res) {
-    var data = req.body
-    var universityRef = database.collection('universitys')
-    university.id  =  universityRef.doc().id
-    university.logo = ""
-    university.name_en = data.name_en
-    university.name_kh = data.name_kh
-    universityRef.doc(university.id).set({
-        "university" : university.id
-    })
-    // universityRef.child(university.id).set(university).then(function(){
-    //     multipleImageCheck(req,university.id);
-    // });
-    res.redirect('/university-add');
-}
-
-function uploadImage(file,id) {
-    let uuid = UUID();
+function addUniversity(req,res) {
+    var file = req.files[0]
+    let uuid = UUID()
     //console.log(file.originalname);
-    var imageBuffer = Buffer.from(file.buffer, 'base64');
-    var bucket = storage.bucket();
-    let fileName = `${callForm}/${new Date().getTime() + file.originalname}`;
-    var uploadImage = bucket.file(fileName);
+    var imageBuffer = Buffer.from(file.buffer, 'base64')
+    var bucket = storage.bucket()
+    let fileName = `logo/${new Date().getTime() + file.originalname}`
+    var uploadImage = bucket.file(fileName)
     uploadImage.save(imageBuffer, {
         metadata: {
             contentType: file.mimetype,
@@ -80,17 +64,27 @@ function uploadImage(file,id) {
                 + '?alt=media&token='
                 + uuid;
             console.log('URL', imgUrl);
-            addImageUrlToDatabase(id,imgUrl)
+            saveUniversity(req,res,imgUrl)
         }
     });
 }
-function addImageUrlToDatabase(id,imgUrl){
-    var imageRef = database.ref('university').child(id);
-    imageRef.child('logo').set(imgUrl).then(function(){
-        console.log("logo add");
-    });
-}
 
+function saveUniversity(req, res,logo_url) {
+    var data = req.body
+    var universityRef = database.collection('universitys')
+    var university = {
+        id : universityRef.doc().id,
+        name_en : data.name_en,
+        name_kh : data.name_kh,
+        website : data.website,
+        logo    : logo_url
+    }
+    universityRef.doc(university.id).set(university).then(function(){
+        res.redirect('/university-add')
+    }).catch(function(error){
+        console.error("Error writing document: ", error)
+    })
+}
 module.exports = router
 
 

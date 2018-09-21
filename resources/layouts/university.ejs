@@ -21,7 +21,25 @@
                                         <th style="width: 5%;text-align:center">Delete</th>
                                     </thead>
                                     <tbody>
-                                        
+                                        <% universitys.forEach((university)=>{ %>
+                                            <tr>
+                                                <td><%= university.data().name_en %></td>
+                                                <td><%= university.data().name_kh %></td>
+                                                <td align="center">0</td>
+                                                <td><a href="<%=university.data().website %>"><%= university.data().website %></a></td>
+                                               
+                                                <td align="center">
+                                                    <a href= "/university/edit/<%=university.data().id %>">
+                                                        <i class="material-icons">edit</i>
+                                                    </a>
+                                                </td>
+                                                <td align="center">
+                                                    <a href="#">
+                                                        <i class="material-icons">delete_forever</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
                                     </tbody>
                                 </table>
                             </div>
