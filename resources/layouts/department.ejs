@@ -8,7 +8,7 @@
                             <div class="card-header" data-background-color="#005A77">
                                 <a class="btn pull-right" data-background-color="#005A77" href="/department-add">Add Department</a>
                                 <h4 class="title">Department List</h4>
-                                <p class="category">Here is a list of all department in cambodia!</p>
+                                <p class="category">Here is a list of all department in cambodia! Total : <%= departments.size %></p>
                             </div>
                             <div class="card-content table-responsive">
                                 <table class="table">
@@ -33,12 +33,12 @@
                                                 0
                                             </td>
                                             <td align="center">
-                                                <a href="/department-edit/<%=department.data().id %>">
+                                                <a href="/department-edit/<%= department.data().id %>">
                                                     <i class="material-icons">edit</i>
                                                 </a>
                                             </td>
                                             <td align="center">
-                                                <a href="#">
+                                                <a href="/department-delete/<%= department.data().id %>">
                                                     <i class="material-icons">delete_forever</i>
                                                 </a>
                                             </td>

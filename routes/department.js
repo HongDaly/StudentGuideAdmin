@@ -28,9 +28,57 @@ router.get('/department-add',function(req,res){
 router.post('/department-add',multer.any(),function(req,res){
     addDepartment(req,res);
 })
-function addDepartment(req,res){
+router.get('/department-edit/:id',function(req,res){
+    database.collection('majors').get()
+    .then(majors => {
+        database.collection('departments').doc(req.params.id).get().then(department => {
+            res.render('layouts/department-edit',{
+                title : 'Department',
+                page : "department",
+                majors :majors,
+                department :department
+            }); 
+        }).catch(err => {
+            console.log(err)
+            res.redirect('/')
+        })
+    })
+    .catch(err => {
+        console.log(err)
+        res.redirect('/')
+    });
+})
+router.post('/department-edit/:id',multer.any(),function(req,res){
+    updateDepartment(req,res)
+})
+router.get('/department-delete/:id',function(req,res){
+    deleteDepartment(req,res)
+})
+function deleteDepartment(req,res){
+    database.collection('departments').doc(req.params.id).delete()
+    .then(function(){
+        res.redirect('/department')
+    }).catch(function(){
+        console.log(err)
+        res.redirect('/')
+    })
+}
+function updateDepartment(req ,res){
     var data = req.body
     console.log(data)
+    var department = {
+        name_en : data.name_en,
+        name_kh : data.name_kh,
+        sub_recomment : data.sub_recomment
+    }
+    database.collection('departments').doc(req.params.id).update(department).then(function(){
+        res.redirect('/department');
+    }).catch(function(err){
+        console.error("Error writing document: ", err)
+    })
+}
+function addDepartment(req,res){
+    var data = req.body
     var departmentRef = database.collection('departments')
     var department = {
         id : departmentRef.doc().id,
@@ -44,29 +92,9 @@ function addDepartment(req,res){
         console.error("Error writing document: ", error)
     })
 }
-// function getAllUniversity(req,res){
-//     res.render('layouts/department-add',{
-//         title : 'Department',
-//         universitys : snapshot,
-//         majors      : majors,
-//         page : "department"
-//     });  
-    // var universityRef = database.ref('university');
-    // var majorRef   = database.ref('major');
-    // universityRef.once('value').then(function(snapshot) {
-    //     majorRef.once('value').then(function(majors){
-    //         res.render('layouts/department-add',{
-    //             title : 'Department',
-    //             universitys : snapshot,
-    //             majors      : majors,
-    //             page : "department"
-    //         });  
-    //     })  
-    // });
-// }
 
 function getAllDepartment(req,res){
-    database.collection('departments').get()
+    database.collection('departments').orderBy('name_en').get()
     .then(snapshot => {
         res.render('layouts/department',{
             title : 'Department',
