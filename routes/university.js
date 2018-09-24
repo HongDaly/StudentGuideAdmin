@@ -5,7 +5,8 @@ var multer = require('../helpers/tool').multer
 const database = firebaseAdmin.firestore()
 database.settings({ timestampsInSnapshots: true })
 const storage = firebaseAdmin.storage()
-var UUID = require('uuid/v4');
+var UUID = require('uuid/v4')
+var request = require('request')
 
 router.get('/university', function (req, res) {
     database.collection('universitys').get()
@@ -23,16 +24,27 @@ router.get('/university', function (req, res) {
         });
 })
 router.post('/university', function (req, res) {
-    res.redirect('/university');
+    res.redirect('/university')
 })
 router.get('/university-add', function (req, res) {
-    res.render('layouts/university-add', {
-        title: 'Add University',
-        page: 'university'
-    });
+    var url="http://battuta.medunes.net/api/region/kh/all/?key=dccb82e7f0a798119726d081d956bcde";
+    request({
+        url: url,
+        json: true
+    }, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            res.render('layouts/university-add', {
+                title: 'Add University',
+                page: 'university',
+                cities : body
+            });
+        }else{
+            res.redirect('/university');
+        }
+    })
 })
 router.post('/university-add', multer.any(), function (req, res) {
-    addUniversity(req, res);
+   addUniversity(req, res)
 })
 function addUniversity(req,res) {
     var file = req.files[0]
@@ -66,13 +78,32 @@ function addUniversity(req,res) {
 function saveUniversity(req, res,logo_url) {
     var data = req.body
     var universityRef = database.collection('universitys')
-    var university = {
-        id : universityRef.doc().id,
-        name_en : data.name_en,
-        name_kh : data.name_kh,
+    var contact = {
+        address : data.address,
+        email   : data.email,
         website : data.website,
-        logo    : logo_url
+        fb_page : data.fb_page,
+        phone   : data.phone
     }
+    var geography = {
+        city           :  data.city,
+        location       :  {
+            lat        :  data.location_lat,
+            long       :  data.location_long
+        },
+        library        : data.library,
+        sport_facility : data.sport_facility
+    }
+    var university = {
+        id          : universityRef.doc().id,
+        name_en     : data.name_en,
+        name_kh     : data.name_kh,
+        name_abbr   : data.name_abbr,
+        logo        : logo_url,
+        contact     : contact,
+        geography   : geography
+    }
+
     universityRef.doc(university.id).set(university).then(function(){
         res.redirect('/university-add')
     }).catch(function(error){
@@ -80,19 +111,3 @@ function saveUniversity(req, res,logo_url) {
     })
 }
 module.exports = router
-
-
-// router.get('/university/edit/:universityId',function(req,res){
-//   var universityId = req.params.universityId;
-//   var universityRef = database.ref('university');
-//   universityRef.child(universityId).once('value').then(function(snapshot) {
-//       if(snapshot.val()!=undefined){
-//         res.render('layouts/university.edit.ejs',{
-//             title : 'Edit University',
-//             university : snapshot
-//         });
-//       }else{
-//           res.redirect('/');
-//       }
-//   }); 
-// })

@@ -13,8 +13,9 @@
                             <div class="card-content table-responsive">
                                 <table class="table">
                                     <thead class="text-primary">
-                                        <th>University (EN)</th>
                                         <th>University (KH)</th>
+                                        <th>University (EN)</th>
+                                        <th>Location</th>
                                         <th>Departments</th>
                                         <th>Webiste</th>
                                         <th style="width: 5%;text-align: center">Edit</th>
@@ -23,10 +24,11 @@
                                     <tbody>
                                         <% universitys.forEach((university)=>{ %>
                                             <tr>
-                                                <td><%= university.data().name_en %></td>
                                                 <td><%= university.data().name_kh %></td>
+                                                <td><b><%= university.data().name_en %></b></td>
+                                                <th><b><%= university.data().geography.city %></b></th>
                                                 <td align="center">0</td>
-                                                <td><a href="<%=university.data().website %>"><%= university.data().website %></a></td>
+                                                <td><a href="<%=university.data().contact.website %>"><%= university.data().contact.website %></a></td>
                                                
                                                 <td align="center">
                                                     <a href= "/university/edit/<%=university.data().id %>">

@@ -13,8 +13,9 @@
                             <div class="card-content table-responsive">
                                 <table class="table">
                                     <thead class="text-primary">
-                                        <th>Department (EN)</th>
+                                        <th>ID</th>
                                         <th>Department (KH)</th>
+                                        <th>Department (EN)</th>
                                         <th>Located in University</th>
                                         <th style="width: 5%;text-align: center">Edit</th>
                                         <th style="width: 5%;text-align:center">Delete</th>
@@ -24,10 +25,13 @@
 
                                         <tr>
                                             <td>
-                                                <%= department.data().name_en %>
+                                                <b><%= department.data().id.substring(0, 3) %>...</b>
                                             </td>
                                             <td>
                                                 <%= department.data().name_kh %>
+                                            </td>
+                                            <td>
+                                                <b><%= department.data().name_en %></b>
                                             </td>
                                             <td>
                                                 0

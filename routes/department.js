@@ -94,7 +94,7 @@ function addDepartment(req,res){
 }
 
 function getAllDepartment(req,res){
-    database.collection('departments').orderBy('name_en').get()
+    database.collection('departments').orderBy('name_kh').get()
     .then(snapshot => {
         res.render('layouts/department',{
             title : 'Department',
