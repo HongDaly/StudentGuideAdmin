@@ -1,0 +1,92 @@
+<%+ extend('layout') %>
+<%+ section('content')%>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="#005A77">
+                <h4 class="title">Add Info University </h4>
+                <p class="category">___________________</p>
+            </div>
+            <div class="card-content">
+                <form action="/university/info/add/:id" method="POST" enctype="multipart/form-data" autocomplete="off">
+                    <div>
+                        <h4 class="title">Branch</h4>
+                        <div class="row card-content" style="margin-top: -30px">
+                            <div class="col-md-4">
+                                <div class="form-group label-floating is-empty">
+                                    <label class="control-label">English Name</label>
+                                    <input type="text" name="name_en" class="form-control">
+                                    <span class="material-input"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group label-floating is-empty">
+                                    <label class="control-label">Khmer Name</label>
+                                    <input type="text" name="name_kh" class="form-control">
+                                    <span class="material-input"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="title">Branch Info</h4>
+                        <div class="row card-content" style="margin-top: -30px">
+                            <div class="col-md-4">
+                                <div class="form-group label-floating is-empty">
+                                    <label class="control-label">Email</label>
+                                    <input type="email" name="email" class="form-control">
+                                    <span class="material-input"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group label-floating is-empty">
+                                    <label class="control-label">Phone</label>
+                                    <input type="text" name="phone" class="form-control">
+                                    <span class="material-input"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">Location Lat</label>
+                                        <input type="text" name="location_lat" class="form-control">
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">Location Long</label>
+                                        <input type="text" name="location_long" class="form-control">
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row card-content" style="margin-top: -30px">
+                           
+                            <div class="col-md-4">
+                                <div class="form-group label-static">
+                                    <label class="control-label">City</label>
+                                    <select class="form-control" name="city">
+                                        <% cities.forEach((city)=>{ %>
+                                            <option value="<%= city.region %>"><%= city.region %></option>
+                                        <% }) %>
+                                    </select>
+                                    <span class="material-input"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label">Address</label>
+                                        <input type="text" name="address" class="form-control">
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                        </div>
+                    
+                    <button type="submit" class="btn btn-primary pull-right">ADD BRANCH</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%+ endSection %>

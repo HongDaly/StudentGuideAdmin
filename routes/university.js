@@ -46,6 +46,35 @@ router.get('/university-add', function (req, res) {
 router.post('/university-add', multer.any(), function (req, res) {
    addUniversity(req, res)
 })
+router.get('/university/edit/:id',function (req,res) {
+    var url="http://battuta.medunes.net/api/region/kh/all/?key=dccb82e7f0a798119726d081d956bcde";
+    request({
+        url: url,
+        json: true
+    }, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            database.collection('universitys').doc(req.params.id).get()
+            .then(university => {
+                console.log(university)
+                res.render('layouts/university-edit', {
+                    title: 'Edit University',
+                    page: 'university',
+                    cities : body,
+                    university : university
+                });
+            }).catch(err => {
+                console.log(err)
+                res.redirect('/university')
+            })
+           
+        }else{
+            res.redirect('/university');
+        }
+    })
+})
+router.post('/university/edit/:id',function (req,res) {
+    updateUniversity(req,res);
+})
 function addUniversity(req,res) {
     var file = req.files[0]
     let uuid = UUID()
@@ -110,4 +139,59 @@ function saveUniversity(req, res,logo_url) {
         console.error("Error writing document: ", error)
     })
 }
+function updateUniversity(req,res){
+    var data = req.body
+    var universityRef = database.collection('universitys')
+    var contact = {
+        address : data.address,
+        email   : data.email,
+        website : data.website,
+        fb_page : data.fb_page,
+        phone   : data.phone
+    }
+    var geography = {
+        city           :  data.city,
+        location       :  {
+            lat        :  data.location_lat,
+            long       :  data.location_long
+        },
+        library        : data.library,
+        sport_facility : data.sport_facility
+    }
+    var university = {
+        name_en     : data.name_en,
+        name_kh     : data.name_kh,
+        name_abbr   : data.name_abbr,
+        contact     : contact,
+        geography   : geography
+    }
+
+    universityRef.doc(university.id).set(university).then(function(){
+        res.redirect('/university')
+    }).catch(function(error){
+        console.error("Error Editting document: ", error)
+    })
+}
+
+//info
+
+router.get('/university/info/add/:id',function(req,res){
+    var url="http://battuta.medunes.net/api/region/kh/all/?key=dccb82e7f0a798119726d081d956bcde";
+    request({
+        url: url,
+        json: true
+    }, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            res.render('layouts/university-info-add', {
+                title       : 'Add University Info',
+                page        : 'university',
+                cities      : body
+            });
+        }else{
+            res.redirect('/university');
+        }
+    })
+   
+})
+
 module.exports = router

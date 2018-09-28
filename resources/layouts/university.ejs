@@ -8,7 +8,7 @@
                             <div class="card-header" data-background-color="#005A77">
                                 <a class="btn pull-right" data-background-color="#005A77" href="/university-add">Add University</a>
                                 <h4 class="title">University List</h4>
-                                <p class="category">Here is a list of all university in cambodia !</p>
+                                <p class="category">Here is a list of all university in cambodia ! Total : <%= universitys.size %></p>
                             </div>
                             <div class="card-content table-responsive">
                                 <table class="table">
@@ -16,8 +16,8 @@
                                         <th>University (KH)</th>
                                         <th>University (EN)</th>
                                         <th>Location</th>
-                                        <th>Departments</th>
                                         <th>Webiste</th>
+                                        <th style="width: 5%;text-align: center">Add Info</th>
                                         <th style="width: 5%;text-align: center">Edit</th>
                                         <th style="width: 5%;text-align:center">Delete</th>
                                     </thead>
@@ -27,9 +27,12 @@
                                                 <td><%= university.data().name_kh %></td>
                                                 <td><b><%= university.data().name_en %></b></td>
                                                 <th><b><%= university.data().geography.city %></b></th>
-                                                <td align="center">0</td>
                                                 <td><a href="<%=university.data().contact.website %>"><%= university.data().contact.website %></a></td>
-                                               
+                                                <td align="center">
+                                                    <a href= "/university/info/add/<%=university.data().id %>">
+                                                        <i class="material-icons">line_style</i>
+                                                    </a>
+                                                </td>
                                                 <td align="center">
                                                     <a href= "/university/edit/<%=university.data().id %>">
                                                         <i class="material-icons">edit</i>
