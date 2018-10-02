@@ -75,6 +75,34 @@ router.get('/university/edit/:id',function (req,res) {
 router.post('/university/edit/:id',function (req,res) {
     updateUniversity(req,res);
 })
+router.get('/university/department/add/:id',function(req,res){
+    database.collection('departments').get()
+    .then(snapshot => {
+       console.log(snapshot)
+        res.render('layouts/university-department-add', {
+            title         : 'University-Department',
+            page          : 'university',
+            university_id : req.params.id,
+            deparments    : snapshot
+        });
+    })
+    .catch(err => {
+        console.log(err)
+        res.redirect('/university')
+    });
+})
+router.post('/university/department/add/:id',multer.any(),function(req,res){
+    addDepartmentToUniversity(req,res)
+})
+function addDepartmentToUniversity(req,res){
+    var data = req.body
+    database.collection('universitys').doc(req.params.id)
+    .set({deparments : data.deparment},{merge:true}).then(function(){
+        res.redirect('/university')
+    }).catch(function(err){
+        console.error("Error Editting document: ", err)
+    })
+}
 function addUniversity(req,res) {
     var file = req.files[0]
     let uuid = UUID()

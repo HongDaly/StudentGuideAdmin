@@ -17,6 +17,7 @@
                                         <th>University (EN)</th>
                                         <th>Location</th>
                                         <th>Webiste</th>
+                                        <th style="width: 5%;text-align: center">Add Major</th>
                                         <th style="width: 5%;text-align: center">Add Info</th>
                                         <th style="width: 5%;text-align: center">Edit</th>
                                         <th style="width: 5%;text-align:center">Delete</th>
@@ -28,6 +29,11 @@
                                                 <td><b><%= university.data().name_en %></b></td>
                                                 <th><b><%= university.data().geography.city %></b></th>
                                                 <td><a href="<%=university.data().contact.website %>"><%= university.data().contact.website %></a></td>
+                                                <td align="center">
+                                                    <a href= "/university/department/add/<%=university.data().id %>">
+                                                        <i class="material-icons">subject</i>
+                                                    </a>
+                                                </td>
                                                 <td align="center">
                                                     <a href= "/university/info/add/<%=university.data().id %>">
                                                         <i class="material-icons">line_style</i>

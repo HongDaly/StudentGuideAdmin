@@ -1,0 +1,83 @@
+<%+ extend('layout') %>
+<%+ section('content')%>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="#005A77">
+                <h4 class="title">All Departments </h4>
+                <p class="category">___________________</p>
+            </div>
+            <div class="card-content">
+                <form action="/university/department/add/<%= university_id %>" method="POST" enctype="multipart/form-data" autocomplete="off">
+                    <div class="row card-content">
+                        <div class="form-group label-floating is-empty">
+                            <label class="control-label">Search</label>
+                            <input type="text" name="search" id="search" class="form-control">
+                            <span class="material-input"></span>
+                        </div>
+                        <div>
+                            <div class="row card-content">                               
+                                <div id="department" class="col-md-9">
+                                    <h4 class="title">Department</h4>
+                                    <% deparments.forEach((deparment)=>{ %>
+                                        <% deparment = deparment.data() %>
+                                        <div class="col-md-3">
+                                            <div class="checkbox">
+                                                <label style="color: #005A77">
+                                                    <input type="checkbox" name="deparment" value="<%= deparment.id %>" id="<%= deparment.id %>" onclick="addToResult(this.id)">
+                                                    <%= deparment.name_kh %>
+                                                    <!-- <%= deparment.name_en %> -->
+                                                    <p style="display:none"><%= deparment.name_en %></p>
+                                                </label>
+                                            </div> 
+                                        </div>
+                                    <% }) %>
+                                </div>
+                                <div class="col-md-3" id="results" style="border-left: thick solid #005A77;">
+                                    <h4 class="title" style="text-align : center">Department Selected</h4>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>    
+                    <button type="submit" class="btn btn-primary pull-right">SAVE</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#search").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#department div div label").filter(function() {    
+                    $(this).parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)    
+                });
+                $("#results div div label").filter(function() {    
+                    $(this).parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)    
+                });
+            });
+        });
+        function addToResult(id){
+            var checkbox = $("#"+id);
+            checkbox.change(function(event) {
+                var checkbox = event.target;
+                if (checkbox.checked) {
+                    addSubjectFromListResult(id);
+                } else {
+                    removeSubjectFromListResult(id);
+                }
+            });
+        }
+        function addSubjectFromListResult(id){
+            var checkbox = $("#"+id);
+            var result = checkbox.parent().parent().parent().removeClass("col-md-3").addClass("col-md-12");
+            $("#results").append(result);
+
+        }
+        function removeSubjectFromListResult(id){
+            var checkbox = $("#"+id);
+            var result = checkbox.parent().parent().parent().removeClass("col-md-12").addClass("col-md-3");
+            $("#department").append(result);
+        }
+	</script>
+    <%+ endSection %>
