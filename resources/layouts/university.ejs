@@ -22,7 +22,7 @@
                                         <th style="width: 5%;text-align: center">Edit</th>
                                         <th style="width: 5%;text-align:center">Delete</th>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="university_list">
                                         <% universitys.forEach((university)=>{ %>
                                             <tr>
                                                 <td><%= university.data().name_kh %></td>
@@ -59,4 +59,14 @@
                 </div>
             </div>
         </div>
+        <script>
+            $(document).ready(function(){
+            $("#searchUniversity").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#university_list tr").filter(function() {    
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)    
+                    });
+                });
+            });
+        </script>
         <%+ endSection %>

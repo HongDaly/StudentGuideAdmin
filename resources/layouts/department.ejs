@@ -20,7 +20,7 @@
                                         <th style="width: 5%;text-align: center">Edit</th>
                                         <th style="width: 5%;text-align:center">Delete</th>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="department_list">
                                     <% departments.forEach((department)=>{ %>
 
                                         <tr>
@@ -57,4 +57,14 @@
                 </div>
             </div>
         </div>
+        <script>
+            $(document).ready(function(){
+                $("#searchDepartment").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#department_list tr").filter(function() {    
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)    
+                    });
+                });
+            });
+        </script>
         <%+ endSection %>
