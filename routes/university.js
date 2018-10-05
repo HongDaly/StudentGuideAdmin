@@ -1,5 +1,6 @@
 var express = require('express')
 var router = express.Router()
+var provinces = require('../helpers/provinces.json')
 var firebaseAdmin = require('../helpers/tool').firebaseAdmin
 var multer = require('../helpers/tool').multer
 const database = firebaseAdmin.firestore()
@@ -27,49 +28,28 @@ router.post('/university', function (req, res) {
     res.redirect('/university')
 })
 router.get('/university-add', function (req, res) {
-    var url="http://battuta.medunes.net/api/region/kh/all/?key=dccb82e7f0a798119726d081d956bcde";
-    request({
-        url: url,
-        json: true
-    }, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            res.render('layouts/university-add', {
-                title: 'Add University',
-                page: 'university',
-                cities : body
-            });
-        }else{
-            res.redirect('/university');
-        }
-    })
+    res.render('layouts/university-add', {
+        title: 'Add University',
+        page: 'university',
+        cities : provinces
+    });   
 })
 router.post('/university-add', multer.any(), function (req, res) {
    addUniversity(req, res)
 })
 router.get('/university/edit/:id',function (req,res) {
-    var url="http://battuta.medunes.net/api/region/kh/all/?key=dccb82e7f0a798119726d081d956bcde";
-    request({
-        url: url,
-        json: true
-    }, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            database.collection('universitys').doc(req.params.id).get()
-            .then(university => {
-                console.log(university)
-                res.render('layouts/university-edit', {
-                    title: 'Edit University',
-                    page: 'university',
-                    cities : body,
-                    university : university
-                });
-            }).catch(err => {
-                console.log(err)
-                res.redirect('/university')
-            })
-           
-        }else{
-            res.redirect('/university');
-        }
+    database.collection('universitys').doc(req.params.id).get()
+    .then(university => {
+        console.log(university)
+        res.render('layouts/university-edit', {
+            title: 'Edit University',
+            page: 'university',
+            cities : provinces,
+            university : university
+        });
+    }).catch(err => {
+        console.log(err)
+        res.redirect('/university')
     })
 })
 router.post('/university/edit/:id',function (req,res) {
@@ -204,22 +184,11 @@ function updateUniversity(req,res){
 //info
 
 router.get('/university/info/add/:id',function(req,res){
-    var url="http://battuta.medunes.net/api/region/kh/all/?key=dccb82e7f0a798119726d081d956bcde";
-    request({
-        url: url,
-        json: true
-    }, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            res.render('layouts/university-info-add', {
-                title       : 'Add University Info',
-                page        : 'university',
-                cities      : body
-            });
-        }else{
-            res.redirect('/university');
-        }
-    })
-   
+    res.render('layouts/university-info-add', {
+        title       : 'Add University Info',
+        page        : 'university',
+        cities      : provinces
+    });
 })
 
 module.exports = router

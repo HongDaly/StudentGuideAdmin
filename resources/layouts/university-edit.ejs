@@ -95,11 +95,11 @@
                                             <label class="control-label">City</label>
                                             <select class="form-control" name="city">
                                                 <% cities.forEach((city)=>{ %>
-                                                    <option value="<%= city.region %>" 
-                                                        <% if(university.data().geography.city == city.region) { %>
+                                                    <option value="<%= city.name_en %>" 
+                                                        <% if(university.data().geography.city == city.name_en) { %>
                                                             selected
                                                         <% } %>
-                                                    ><%= city.region %></option>
+                                                    ><%= city.name_en %></option>
                                                 <% }) %>
                                             </select>
                                             <span class="material-input"></span>
