@@ -18,15 +18,15 @@
                             <div class="row card-content">                               
                                 <div id="department" class="col-md-9">
                                     <h4 class="title">Department</h4>
-                                    <% deparments.forEach((deparment)=>{ %>
-                                        <% deparment = deparment.data() %>
-                                        <div class="col-md-3">
+                                    <% departments.forEach((department)=>{ %>
+                                        <% department = department.data() %>
+                                        <div class="col-md-4">
                                             <div class="checkbox">
                                                 <label style="color: #005A77">
-                                                    <input type="checkbox" name="deparment" value="<%= deparment.id %>" id="<%= deparment.id %>" onclick="addToResult(this.id)">
-                                                    <%= deparment.name_kh %>
-                                                    <!-- <%= deparment.name_en %> -->
-                                                    <p style="display:none"><%= deparment.name_en %></p>
+                                                    <input type="checkbox" name="department" value="<%= department.id %>" id="<%= department.id %>" onclick="addToResult(this.id)">
+                                                    <%= department.name_kh %>
+                                                    <!-- <%= department.name_en %> -->
+                                                    <p style="display:none"><%= department.name_en %></p>
                                                 </label>
                                             </div> 
                                         </div>
@@ -70,13 +70,13 @@
         }
         function addSubjectFromListResult(id){
             var checkbox = $("#"+id);
-            var result = checkbox.parent().parent().parent().removeClass("col-md-3").addClass("col-md-12");
+            var result = checkbox.parent().parent().parent().removeClass("col-md-4").addClass("col-md-12");
             $("#results").append(result);
 
         }
         function removeSubjectFromListResult(id){
             var checkbox = $("#"+id);
-            var result = checkbox.parent().parent().parent().removeClass("col-md-12").addClass("col-md-3");
+            var result = checkbox.parent().parent().parent().removeClass("col-md-12").addClass("col-md-4");
             $("#department").append(result);
         }
 	</script>

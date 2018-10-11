@@ -27,6 +27,35 @@ router.get('/university', function (req, res) {
 router.post('/university', function (req, res) {
     res.redirect('/university')
 })
+router.get('/university/feature-img/:id',function(req,res){
+    res.render('layouts/university-feature-img',{
+        title:  req.params.id,
+        page: 'university',
+        id : req.params.id
+    })
+})
+router.post('/university/feature-img/:id', multer.any(),function(req,res){
+    var data = req.body
+    database.collection('universitys').doc(req.params.id)
+    .set({feature_images : data.link},{merge:true}).then(function(){
+        res.redirect('/university')
+    }).catch(function(err){
+        console.error("Error Editting document: ", err)
+    })
+})
+router.get('/university/detail/:id',function(req,res){
+    database.collection('universitys').doc(req.params.id).get()
+    .then(university => {
+        res.render('layouts/university-detail',{
+            title: university.data().name_en,
+            page: 'university',
+            university : university
+        })
+    }).catch(err => {
+        console.log(err)
+        res.redirect('/university')
+    })
+})
 router.get('/university-add', function (req, res) {
     res.render('layouts/university-add', {
         title: 'Add University',
@@ -63,7 +92,7 @@ router.get('/university/department/add/:id',function(req,res){
             title         : 'University-Department',
             page          : 'university',
             university_id : req.params.id,
-            deparments    : snapshot
+            departments    : snapshot
         });
     })
     .catch(err => {
@@ -77,7 +106,7 @@ router.post('/university/department/add/:id',multer.any(),function(req,res){
 function addDepartmentToUniversity(req,res){
     var data = req.body
     database.collection('universitys').doc(req.params.id)
-    .set({deparments : data.deparment},{merge:true}).then(function(){
+    .set({departments : data.department},{merge:true}).then(function(){
         res.redirect('/university')
     }).catch(function(err){
         console.error("Error Editting document: ", err)
